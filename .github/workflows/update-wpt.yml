@@ -24,9 +24,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        subsystem: ${{ fromJSON(github.event.inputs.subsystems || '["url", "urlpattern", "WebCryptoAPI"]') }}
+        subsystem: ${{ fromJSON(github.event.inputs.subsystems || '["url", "urlpattern",
+          "WebCryptoAPI"]') }}
 
     steps:
+      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
+        with:
+          config: ${{ vars.PERMISSIONS_CONFIG }}
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
         with:
           persist-credentials: false
@@ -68,7 +72,8 @@ jobs:
           SUBSYSTEM: ${{ matrix.subsystem }}
 
       - name: Open or update PR for the subsystem update
-        uses: gr2m/create-or-update-pull-request-action@77596e3166f328b24613f7082ab30bf2d93079d5
+        uses: 
+          gr2m/create-or-update-pull-request-action@77596e3166f328b24613f7082ab30bf2d93079d5
         with:
           # The create-or-update-pull-request-action matches the branch name by prefix,
           # which is why we need to add the -wpt suffix. If we dont do that, we risk matching wrong PRs,
@@ -76,12 +81,15 @@ jobs:
           # as seen in https://github.com/nodejs/node/pull/57368
           branch: actions/update-${{ matrix.subsystem }}-wpt
           author: Node.js GitHub Bot <github-bot@iojs.org>
-          title: 'test: update WPT for ${{ matrix.subsystem }} to ${{ env.short_version }}'
-          commit-message: 'test: update WPT for ${{ matrix.subsystem }} to ${{ env.short_version }}'
+          title: 'test: update WPT for ${{ matrix.subsystem }} to ${{ env.short_version
+            }}'
+          commit-message: 'test: update WPT for ${{ matrix.subsystem }} to ${{ env.short_version
+            }}'
           labels: test
           update-pull-request-title-and-body: true
           body: >
             This is an automated update of the WPT for ${{ matrix.subsystem }} to
-            https://github.com/web-platform-tests/wpt/commit/${{ env.long_version }}.
+            https://github.com/web-platform-tests/wpt/commit/${{ env.long_version
+            }}.
         env:
           GITHUB_TOKEN: ${{ secrets.GH_USER_TOKEN }}
