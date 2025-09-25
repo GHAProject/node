@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
+        with:
+          config: ${{ vars.PERMISSIONS_CONFIG }}
       - name: Checkout nodejs/node
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
         with:
@@ -50,7 +53,8 @@ jobs:
 
       - name: Open Pull Request
         if: ${{ env.new_version != env.current_version }}
-        uses: gr2m/create-or-update-pull-request-action@77596e3166f328b24613f7082ab30bf2d93079d5  # Create a PR or update the Action's existing PR
+        uses: 
+          gr2m/create-or-update-pull-request-action@77596e3166f328b24613f7082ab30bf2d93079d5      # Create a PR or update the Action's existing PR
         env:
           GITHUB_TOKEN: ${{ secrets.GH_USER_TOKEN }}
         with:
