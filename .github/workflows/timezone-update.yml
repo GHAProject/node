@@ -16,7 +16,7 @@ jobs:
       pull-requests: write  # to create a PR (gr2m/create-or-update-pull-request-action)
 
     if: github.repository == 'GHAProject/node'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - uses: GitHubSecurityLab/actions-permissions/monitor@v1
