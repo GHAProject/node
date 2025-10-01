@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   find:
-    if: github.repository == 'nodejs/node'
+    if: github.repository == 'GHAProject/node'
     runs-on: ubuntu-latest
 
     steps:
